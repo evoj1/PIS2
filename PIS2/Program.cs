@@ -50,25 +50,5 @@ namespace PIS2
             }
             return nameBuilder.ToString();
         }
-        public class Lesson
-        {
-            public DateTime DateTime { get; set; }
-            public string Cabinet { get; set; }
-            public string TeacherName { get; set; }
-
-            public Lesson(DateTime dateTime, string cabinet, string teacherName)
-            {
-                DateTime = dateTime;
-                Cabinet = cabinet;
-                TeacherName = teacherName;
-            }
-
-            public override string ToString()
-            {
-                return $"{DateTime:yyyy.MM.dd}\n" +
-                    $"{Cabinet}\n" +
-                    $"{TeacherName}\n";
-            }
-        }
     }
 }
