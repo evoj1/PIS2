@@ -15,34 +15,25 @@ namespace PIS2
 
             if (result is List<object> lessons)
             {
-                var basicLessons = lessons.OfType<Lesson>();
-                var onlineLessons = lessons.OfType<Lesson>();
-                var courseLessons = lessons.OfType<Lesson>();
+                var regularLessons = lessons.OfType<Lesson>();
+                var onlineLessons = lessons.OfType<OnlineLesson>();
+                var courseLessons = lessons.OfType<CourseLesson>();
 
-                Console.WriteLine("BASIC LESSONS");
-
-                foreach ( var lesson in basicLessons)
-                {
-                    Console.WriteLine($"{lesson}\n");
-                }
-
-                Console.WriteLine("ONLINE LESSONS");
-
-                foreach ( var lesson in onlineLessons)
-                {
-                    Console.WriteLine($"{lesson}\n");
-                }
-
-                Console.WriteLine("COURSE LESSONS");
-
-                foreach ( var lesson in courseLessons)
-                {
-                    Console.WriteLine($"{lesson}\n");
-                }
+                PrintGroup("LESSONS", regularLessons);
+                PrintGroup("ONLINE LESSONS", onlineLessons);
+                PrintGroup("COURSE LESSONS", courseLessons);
             }
-            else if (result == null)
+        }
+
+        private static void PrintGroup<T>(string title, IEnumerable<T> items)
+        {
+            if (!items.Any()) return;
+            Console.WriteLine(title);
+            Console.WriteLine();
+            foreach (var item in items)
             {
-                Console.WriteLine("");
+                Console.WriteLine(item);
+                Console.WriteLine();
             }
         }
     }

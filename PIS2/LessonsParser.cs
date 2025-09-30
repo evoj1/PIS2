@@ -22,66 +22,95 @@ namespace PIS2
             try
             {
                 string[] lines = File.ReadAllLines(filePath);
-                List<object> lessons = new List<object>();
-
-                foreach (string line in lines)
-                {
-                    var parts = new List<string>();
-                    int i = 0;
-
-                    while (i < line.Length)
-                    {
-                        if (line[i] == '"')
-                        {
-                            int endQuote = line.IndexOf('"', i + 1);
-                            if (endQuote != -1)
-                            {
-                                parts.Add(line.Substring(i + 1, endQuote - i - 1));
-                                i = endQuote + 1;
-                            }
-                            else
-                            {
-                                i++;
-                            }
-                        }
-                        else if (!char.IsWhiteSpace(line[i]))
-                        {
-                            int end = i;
-                            while (end < line.Length && !char.IsWhiteSpace(line[end]))
-                            {
-                                end++;
-                            }
-                            parts.Add(line.Substring(i, end - i));
-                            i = end;
-                        }
-                        else
-                        {
-                            i++;
-                        }
-                    }
-
-                    if (parts.Count == 3)
-                    {
-                        lessons.Add(ParseBasicLesson(parts.ToArray()));
-                    }
-                    else if (parts.Count >= 4)
-                    {
-                        if (parts[3].Contains("http") || parts[3].Contains("www"))
-                        {
-                            lessons.Add(ParseOnlineLesson(parts.ToArray()));
-                        }
-                        else if (parts[3].Contains(":"))
-                        {
-                            lessons.Add(ParseCourseLesson(parts.ToArray()));
-                        }
-                    }
-                }
-                return lessons;
+                return ParseLines(lines);
             }
             catch (Exception ex)
             {
                 return ex.Message;
             }
+        }
+        private List<object> ParseLines(string[] lines)
+        {
+            List<object> lessons = new List<object>();
+
+            foreach (string line in lines)
+            {
+                var lesson = ParseLine(line);
+                if (lesson != null)
+                {
+                    lessons.Add(lesson);
+                }
+            }
+
+            return lessons;
+        }
+        private object ParseLine(string line)
+        {
+            string[] parts = ParseLineParts(line);
+            return CreateLessonFromParts(parts);
+        }
+        private static string[] ParseLineParts(string line)
+        {
+            var parts = new List<string>();
+            var current = new StringBuilder();
+            bool inQuotes = false;
+
+            for (int i = 0; i < line.Length; i++)
+            {
+                char c = line[i];
+
+                if (c == '"')
+                {
+                    inQuotes = !inQuotes;
+                    continue;
+                }
+
+                if (char.IsWhiteSpace(c) && !inQuotes)
+                {
+                    if (current.Length > 0)
+                    {
+                        parts.Add(current.ToString());
+                        current.Clear();
+                    }
+                }
+                else
+                {
+                    current.Append(c);
+                }
+            }
+
+            if (current.Length > 0)
+            {
+                parts.Add(current.ToString());
+            }
+
+            return parts.ToArray();
+        }
+        private object CreateLessonFromParts(string[] parts)
+        {
+            if (parts.Length == 3)
+            {
+                return ParseBasicLesson(parts);
+            }
+            else if (parts.Length == 4)
+            {
+                return ParseSpecializedLesson(parts);
+            }
+
+            return null;
+        }
+        private object ParseSpecializedLesson(string[] parts)
+        {
+            if (parts[3].Contains("http") || parts[3].Contains("www"))
+            {
+                return ParseOnlineLesson(parts);
+            }
+            else if (parts[3].Contains(":"))
+            {
+                return ParseCourseLesson(parts);
+            }
+
+            return null;
         }
         private Lesson ParseBasicLesson(string[] parts)
         {
