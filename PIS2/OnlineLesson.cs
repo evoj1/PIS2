@@ -19,5 +19,12 @@ namespace PIS2
             TeacherName = teacherName;
             MeetingLink = meetingLink;
         }
+        public override string ToString()
+        {
+            return $"Дата: {DateTime}\n" +
+                $"Платформа: {Platform}\n" +
+                $"Имя преподавателя: {TeacherName}\n" +
+                $"Ссылка: {MeetingLink}";
+        }
     }
 }

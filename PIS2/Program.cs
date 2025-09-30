@@ -10,45 +10,40 @@ namespace PIS2
     {
         static void Main(string[] args)
         {
-            string input = "2025.09.09  \"23-03\"  \"Губерниев Иван\"";
-            Console.WriteLine(ParseString(input));
-        }
+            LessonsParser parser = new LessonsParser();
+            var result = parser.ParseLessons();
 
-        static Lesson ParseString(string input)
-        {
-            string[] array = input.Split(new char[] { ' ', '"' }, StringSplitOptions.RemoveEmptyEntries);
-            string date = array[0];
-            string cabinet = array[1];
-            string teacherName = ParseName(input);
-
-            DateTime dateTime = DateTime.ParseExact(date, "yyyy.MM.dd", null);
-
-            return new Lesson(dateTime, cabinet, teacherName);
-        }
-
-        static string ParseName(string input)
-        {
-            int quoteCount = 0;
-            StringBuilder nameBuilder = new StringBuilder();
-
-            foreach (char c in input)
+            if (result is List<object> lessons)
             {
-                if (c == '"')
+                var basicLessons = lessons.OfType<Lesson>();
+                var onlineLessons = lessons.OfType<Lesson>();
+                var courseLessons = lessons.OfType<Lesson>();
+
+                Console.WriteLine("BASIC LESSONS");
+
+                foreach ( var lesson in basicLessons)
                 {
-                    quoteCount++;
-                    continue;
+                    Console.WriteLine($"{lesson}\n");
                 }
 
-                if (quoteCount == 3)
+                Console.WriteLine("ONLINE LESSONS");
+
+                foreach ( var lesson in onlineLessons)
                 {
-                    nameBuilder.Append(c);
+                    Console.WriteLine($"{lesson}\n");
                 }
-                else if (quoteCount > 3)
+
+                Console.WriteLine("COURSE LESSONS");
+
+                foreach ( var lesson in courseLessons)
                 {
-                    break;
+                    Console.WriteLine($"{lesson}\n");
                 }
             }
-            return nameBuilder.ToString();
+            else if (result == null)
+            {
+                Console.WriteLine("");
+            }
         }
     }
 }

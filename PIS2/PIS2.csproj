@@ -45,12 +45,16 @@
   <ItemGroup>
     <Compile Include="CourseLesson.cs" />
     <Compile Include="Lesson.cs" />
+    <Compile Include="LessonsParser.cs" />
     <Compile Include="OnlineLesson.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="lessons.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

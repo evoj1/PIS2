@@ -19,5 +19,12 @@ namespace PIS2
             TeacherName = teacherName;
             TimeSpan = timeSpan;
         }
+        public override string ToString()
+        {
+            return $"Дата: {DateTime}\n" +
+                $"Сайт: {WebSyte}\n" +
+                $"Имя преподавателя: {TeacherName}\n" +
+                $"Продолжительность: {TimeSpan}";
+        }
     }
 }

@@ -18,5 +18,11 @@ namespace PIS2
             Cabinet = cabinet;
             TeacherName = teacherName;
         }
+        public override string ToString()
+        {
+            return $"Дата: {DateTime:yyyy.MM.dd}\n" +
+                $"Кабинет: {Cabinet}\n" +
+                $"Имя преподавтаеля: {TeacherName}";
+        }
     }
 }
