@@ -22,20 +22,25 @@ namespace PIS2
             try
             {
                 string[] lines = File.ReadAllLines(filePath);
-                return ParseLines(lines);
+                return AddLessonsInList(lines);
             }
             catch (Exception ex)
             {
                 return ex.Message;
             }
         }
-        private List<object> ParseLines(string[] lines)
+        private List<object> AddLessonsInList(string[] lines)
         {
             List<object> lessons = new List<object>();
 
             foreach (string line in lines)
             {
-                var lesson = ParseLine(line);
+                if (string.IsNullOrWhiteSpace(line))
+                {
+                    continue;
+                }
+
+                var lesson = ParseLineInFile(line);
                 if (lesson != null)
                 {
                     lessons.Add(lesson);
@@ -44,12 +49,12 @@ namespace PIS2
 
             return lessons;
         }
-        private object ParseLine(string line)
+        private object ParseLineInFile(string line)
         {
-            string[] parts = ParseLineParts(line);
+            string[] parts = ParseLineInPartsRemoveQuotes(line);
             return CreateLessonFromParts(parts);
         }
-        private static string[] ParseLineParts(string line)
+        private static string[] ParseLineInPartsRemoveQuotes(string line)
         {
             var parts = new List<string>();
             var current = new StringBuilder();
@@ -92,22 +97,18 @@ namespace PIS2
             {
                 return ParseBasicLesson(parts);
             }
-            else if (parts.Length >= 4)
-            {
-                return ParseSpecializedLesson(parts);
-            }
 
-            return null;
-        }
-        private object ParseSpecializedLesson(string[] parts)
-        {
-            if (parts[3].Contains("http") || parts[3].Contains("www"))
+            if (parts.Length >= 4)
             {
-                return ParseOnlineLesson(parts);
-            }
-            else if (parts[3].Contains(":"))
-            {
-                return ParseCourseLesson(parts);
+                string fourth = parts[3];
+                if (fourth.Contains("http") || fourth.Contains("www"))
+                {
+                    return ParseOnlineLesson(parts);
+                }
+                if (fourth.Contains(":"))
+                {
+                    return ParseCourseLesson(parts);
+                }
             }
 
             return null;
@@ -126,9 +127,10 @@ namespace PIS2
             string platform = parts[1];
             string teacherName = parts[2];
             string meetingLink = parts[3];
-            string nameOfLesson = parts[4];
+            int countLessons = parts.Length > 4 ? int.Parse(parts[4]) : 0;
+            string nameOfLesson = parts.Length > 5 ? parts[5] : string.Empty;
 
-            return new OnlineLesson(dateTime, platform, teacherName, meetingLink, nameOfLesson);
+            return new OnlineLesson(dateTime, platform, teacherName, meetingLink, countLessons, nameOfLesson);
         }
         private CourseLesson ParseCourseLesson(string[] parts)
         {

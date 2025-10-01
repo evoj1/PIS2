@@ -12,13 +12,16 @@ namespace PIS2
         public string Platform { get; set; }
         public string TeacherName { get; set; }
         public string MeetingLink { get; set; }
+        public int CountLessons { get; set; }
         public string NameOfLesson { get; set; }
-        public OnlineLesson(DateTime dateTime, string platform, string teacherName, string meetingLink, string nameOfLesson)
+
+        public OnlineLesson(DateTime dateTime, string platform, string teacherName, string meetingLink, int countLessons, string nameOfLesson)
         {
             DateTime = dateTime;
             Platform = platform;
             TeacherName = teacherName;
             MeetingLink = meetingLink;
+            CountLessons = countLessons;
             NameOfLesson = nameOfLesson;
         }
         public override string ToString()
@@ -27,6 +30,7 @@ namespace PIS2
                 $"Платформа: {Platform}\n" +
                 $"Имя преподавателя: {TeacherName}\n" +
                 $"Ссылка: {MeetingLink}\n" +
+                $"Количество уроков: {CountLessons}\n" +
                 $"Название урока: {NameOfLesson}\n";
         }
     }
