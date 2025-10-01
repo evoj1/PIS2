@@ -128,9 +128,8 @@ namespace PIS2
             string meetingLink = parts[3];
             int countLessons = parts.Length > 4 ? int.Parse(parts[4]) : 0;
             string nameOfLesson = parts.Length > 5 ? parts[5] : string.Empty;
-            string partOfLesson = parts[6];
 
-            return new OnlineLesson(dateTime, platform, teacherName, meetingLink, countLessons, nameOfLesson, partOfLesson);
+            return new OnlineLesson(dateTime, platform, teacherName, meetingLink, countLessons, nameOfLesson);
         }
         private CourseLesson ParseCourseLesson(string[] parts)
         {
