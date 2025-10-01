@@ -16,6 +16,7 @@ namespace PIS2
         public string NameOfLesson { get; set; }
         public string PartOfLesson { get; set; }
 
+
         public OnlineLesson(DateTime dateTime, string platform, string teacherName, string meetingLink, int countLessons, string nameOfLesson, string partOfLesson)
         {
             DateTime = dateTime;
