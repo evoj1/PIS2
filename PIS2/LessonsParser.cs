@@ -92,7 +92,7 @@ namespace PIS2
             {
                 return ParseBasicLesson(parts);
             }
-            else if (parts.Length == 4)
+            else if (parts.Length >= 4)
             {
                 return ParseSpecializedLesson(parts);
             }
@@ -126,8 +126,9 @@ namespace PIS2
             string platform = parts[1];
             string teacherName = parts[2];
             string meetingLink = parts[3];
+            string nameOfLesson = parts[4];
 
-            return new OnlineLesson(dateTime, platform, teacherName, meetingLink);
+            return new OnlineLesson(dateTime, platform, teacherName, meetingLink, nameOfLesson);
         }
         private CourseLesson ParseCourseLesson(string[] parts)
         {
