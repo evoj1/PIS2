@@ -51,45 +51,8 @@ namespace PIS2
         }
         private object ParseLineInFile(string line)
         {
-            string[] parts = ParseLineInPartsRemoveQuotes(line);
+            string[] parts = Utilities.SplitWordsWithoutQoutes(line);
             return CreateLessonFromParts(parts);
-        }
-        private static string[] ParseLineInPartsRemoveQuotes(string line)
-        {
-            var parts = new List<string>();
-            var current = new StringBuilder();
-            bool inQuotes = false;
-
-            for (int i = 0; i < line.Length; i++)
-            {
-                char c = line[i];
-
-                if (c == '"')
-                {
-                    inQuotes = !inQuotes;
-                    continue;
-                }
-
-                if (char.IsWhiteSpace(c) && !inQuotes)
-                {
-                    if (current.Length > 0)
-                    {
-                        parts.Add(current.ToString());
-                        current.Clear();
-                    }
-                }
-                else
-                {
-                    current.Append(c);
-                }
-            }
-
-            if (current.Length > 0)
-            {
-                parts.Add(current.ToString());
-            }
-
-            return parts.ToArray();
         }
         private object CreateLessonFromParts(string[] parts)
         {
