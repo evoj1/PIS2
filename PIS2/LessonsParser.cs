@@ -100,12 +100,11 @@ namespace PIS2
 
             if (parts.Length >= 4)
             {
-                string fourth = parts[3];
-                if (fourth.Contains("http") || fourth.Contains("www"))
+                if (parts[3].Contains("http") || parts[3].Contains("www"))
                 {
                     return ParseOnlineLesson(parts);
                 }
-                if (fourth.Contains(":"))
+                if (parts[3].Contains(":"))
                 {
                     return ParseCourseLesson(parts);
                 }
