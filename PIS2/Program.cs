@@ -9,20 +9,21 @@ namespace PIS2
     {
         static void Main(string[] args)
         {
-            try
-            {
-                string filePath = "lessons.txt"; // путь можно сделать аргументом консоли
-                var parser = new LessonParser();
-                var lessons = parser.ParseLessons(filePath);
+            //try
+            //{
+            //    string filePath = "lessons.txt";
+            //    var parser = new LessonParser();
+            //    var lessons = parser.ParseLessons(filePath);
 
-                PrintGroup("Обычные занятия", lessons.OfType<Lesson>());
-                PrintGroup("Оналйн занятия", lessons.OfType<OnlineLesson>());
-                PrintGroup("Курсы", lessons.OfType<CourseLesson>());
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка: {ex.Message}");
-            }
+            //    PrintGroup("Обычные занятия", lessons.OfType<Lesson>());
+            //    PrintGroup("Оналйн занятия", lessons.OfType<OnlineLesson>());
+            //    PrintGroup("Курсы", lessons.OfType<CourseLesson>());
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"Ошибка: {ex.Message}");
+            //}
+            
         }
 
         private static void PrintGroup<T>(string title, System.Collections.Generic.IEnumerable<T> lessons)

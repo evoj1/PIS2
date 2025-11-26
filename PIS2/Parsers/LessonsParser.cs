@@ -9,6 +9,37 @@ namespace PIS2.Parsers
 {
     public class LessonParser
     {
+        public int CountNumbers(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                throw new Exception("1");
+
+            var parts = input.Split(' ', (char)StringSplitOptions.RemoveEmptyEntries);
+
+            int count = 0;
+            foreach (var part in parts)
+            {
+                var trimmed = part.TrimStart('0');
+                if (trimmed.Length == 0)
+                    continue;
+
+                count++;
+            }
+
+            return count;
+        }
+        public int Foo(string[] text)
+        {
+            int countStrings = 0;
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (text[i].Length % 2 == 0)
+                {
+                    countStrings++;
+                }
+            }
+            return countStrings;
+        }
         public List<LessonBase> ParseLessons(string filePath)
         {
             var lessons = new List<LessonBase>();
@@ -45,7 +76,7 @@ namespace PIS2.Parsers
             return lessons;
         }
 
-        private LessonBase ParseLine(string line)
+        public LessonBase ParseLine(string line)
         {
             try
             {
