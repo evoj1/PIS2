@@ -1,38 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PIS2.Parsers;
+using PIS2.Models;
 
 namespace PIS2
 {
-    internal class Program
+    class Program
     {
         static void Main(string[] args)
         {
-            LessonsParser parser = new LessonsParser();
-            var result = parser.ParseLessons();
-
-            if (result is List<object> lessons)
+            try
             {
-                var regularLessons = lessons.OfType<Lesson>();
-                var onlineLessons = lessons.OfType<OnlineLesson>();
-                var courseLessons = lessons.OfType<CourseLesson>();
+                string filePath = "lessons.txt"; // путь можно сделать аргументом консоли
+                var parser = new LessonParser();
+                var lessons = parser.ParseLessons(filePath);
 
-                PrintGroup("LESSONS", regularLessons);
-                PrintGroup("ONLINE LESSONS", onlineLessons);
-                PrintGroup("COURSE LESSONS", courseLessons);
+                PrintGroup("Обычные занятия", lessons.OfType<Lesson>());
+                PrintGroup("Оналйн занятия", lessons.OfType<OnlineLesson>());
+                PrintGroup("Курсы", lessons.OfType<CourseLesson>());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка: {ex.Message}");
             }
         }
 
-        private static void PrintGroup<T>(string title, IEnumerable<T> items)
+        private static void PrintGroup<T>(string title, System.Collections.Generic.IEnumerable<T> lessons)
         {
-            if (!items.Any()) return;
-            Console.WriteLine(title);
-            Console.WriteLine();
-            foreach (var item in items)
+            if (!lessons.Any()) return;
+            Console.WriteLine($"\n--- {title} ---\n");
+            foreach (var lesson in lessons)
             {
-                Console.WriteLine(item);
+                Console.WriteLine(lesson);
                 Console.WriteLine();
             }
         }
